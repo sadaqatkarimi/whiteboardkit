@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:whiteboardkit/draw_chunker.dart';
 import 'package:xml/xml.dart' as xml;
+import 'package:xml/xml.dart';
 
 part 'whiteboard_draw.g.dart';
 
@@ -223,13 +224,18 @@ class WhiteboardDraw {
       builder.attribute("width", draw.width);
       if (animation) builder.attribute("data-wipes", wipes.join(","));
     });
-    return builder.build().document!.findElements("svg").first.toString();
+    return builder
+        .buildDocument()
+        .document!
+        .findElements("svg")
+        .first
+        .toString();
 
     // return '<svg height="${draw.height}" width="${draw.width}" data-wipes="${wipes.join(",")}" xmlns="http://www.w3.org/2000/svg" version="1.1">${pathsStrings.join('')}</svg>';
   }
 
   factory WhiteboardDraw.fromWhiteboardSVG(String svg) {
-    final document = xml.parse(svg);
+    final document = XmlDocument.parse(svg);
     // print("document.toXmlString()");
     // print(document.toXmlString());
 
